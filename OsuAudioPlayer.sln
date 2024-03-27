@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34701.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OsuAudioPlayer", "OsuAudioPlayer\OsuAudioPlayer.csproj", "{A52C04DE-4022-4395-BE55-E43E63DC8EFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OsuData", "OsuDataHandler\OsuData.csproj", "{1080FFED-68C9-49E7-9A84-FA8CEE18C58C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A52C04DE-4022-4395-BE55-E43E63DC8EFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A52C04DE-4022-4395-BE55-E43E63DC8EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A52C04DE-4022-4395-BE55-E43E63DC8EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A52C04DE-4022-4395-BE55-E43E63DC8EFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1080FFED-68C9-49E7-9A84-FA8CEE18C58C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1080FFED-68C9-49E7-9A84-FA8CEE18C58C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1080FFED-68C9-49E7-9A84-FA8CEE18C58C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1080FFED-68C9-49E7-9A84-FA8CEE18C58C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5B9B26E2-94FE-4F80-A7AB-7F9D25758E20}
+	EndGlobalSection
+EndGlobal
