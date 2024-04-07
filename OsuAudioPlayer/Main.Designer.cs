@@ -1,6 +1,6 @@
 ﻿namespace OsuAudioPlayer
 {
-    partial class Form1
+    partial class Main
     {
         /// <summary>
         ///  Required designer variable.
@@ -84,10 +84,11 @@
             pictureBox1.TabStop = false;
             pictureBox1.Click += pictureBox1_Click;
             // 
-            // Form1
+            // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ClientSize = new Size(972, 558);
             Controls.Add(listView2);
             Controls.Add(textBox1);
@@ -95,8 +96,8 @@
             Controls.Add(button1);
             Controls.Add(pictureBox1);
             Margin = new Padding(2, 3, 2, 3);
-            Name = "Form1";
-            Text = "Form1";
+            Name = "Main";
+            Text = "Main";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);

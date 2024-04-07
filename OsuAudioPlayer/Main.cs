@@ -9,17 +9,18 @@ using StockingNAudio.Track;
 using System.Drawing.Printing;
 namespace OsuAudioPlayer
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
-        public Form1()
+        public Main()
         {
             InitializeComponent();
             this.KeyPreview = true;
         }
         List<SingleSong> singleSongList = [];
+        private string osuDir = @"E:\SmallGame\osu";
         private void Form1_Load(object sender, EventArgs e)
         {
-            SongPack songPack = new(@"E:\SmallGame\osu");
+            SongPack songPack = new(osuDir);
             //pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
 
             #region loadListView1
@@ -182,7 +183,7 @@ namespace OsuAudioPlayer
         /// <returns></returns>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == (Keys.Control | Keys.S))
+            if (keyData == (Keys.Control | Keys.W))
             {
                 Play();
                 return true;
@@ -200,6 +201,32 @@ namespace OsuAudioPlayer
                 GetSelectedSong();
                 Play();
                 return true;
+            }
+            if(keyData == (Keys.Control | Keys.S))
+            {
+                track.Stop();
+                track.Dispose();
+                trackOccupied = false;
+                return true;
+            }
+            if(keyData == (Keys.Control | Keys.P))
+            {
+                foreach(Control ctrl in this.Controls)
+                {
+                    if(ctrl != pictureBox1)
+                        ctrl.Hide();
+                }
+            }
+            if(keyData == (Keys.Control | Keys.O))
+            {
+                foreach (Control ctrl in this.Controls)
+                {
+                    ctrl.Show();
+                }
+            }
+            if(keyData == (Keys.Control | Keys.I))
+            {
+                
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
