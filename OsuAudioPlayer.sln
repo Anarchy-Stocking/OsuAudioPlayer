@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OsuAudioPlayer", "OsuAudioPlayer\OsuAudioPlayer.csproj", "{A52C04DE-4022-4395-BE55-E43E63DC8EFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OsuAudioPlayer", "OsuAudioPlayer\OsuAudioPlayer.csproj", "{A52C04DE-4022-4395-BE55-E43E63DC8EFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OsuData", "OsuDataHandler\OsuData.csproj", "{1080FFED-68C9-49E7-9A84-FA8CEE18C58C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OsuData", "OsuDataHandler\OsuData.csproj", "{1080FFED-68C9-49E7-9A84-FA8CEE18C58C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockingNAudio", "StockingNaudio\StockingNAudio.csproj", "{BEA9472C-356D-44B4-B718-DDEB24A9AA76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioPlayer", "AudioPlayer\AudioPlayer.csproj", "{AECF60CC-C226-4056-AEA2-5C894E8464AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{1080FFED-68C9-49E7-9A84-FA8CEE18C58C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1080FFED-68C9-49E7-9A84-FA8CEE18C58C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1080FFED-68C9-49E7-9A84-FA8CEE18C58C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEA9472C-356D-44B4-B718-DDEB24A9AA76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEA9472C-356D-44B4-B718-DDEB24A9AA76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEA9472C-356D-44B4-B718-DDEB24A9AA76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEA9472C-356D-44B4-B718-DDEB24A9AA76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AECF60CC-C226-4056-AEA2-5C894E8464AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AECF60CC-C226-4056-AEA2-5C894E8464AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AECF60CC-C226-4056-AEA2-5C894E8464AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AECF60CC-C226-4056-AEA2-5C894E8464AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

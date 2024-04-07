@@ -12,7 +12,7 @@ namespace OsuData
     /// </summary>
     public partial class SingleSong
     {
-        DirectoryInfo address;
+        public DirectoryInfo address { private set; get; }
         public String name { set; get; }
         
         FileInfo []mixFiles;

@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace OsuData.FileExplainer
 {
-    internal class DotOsuReader
+    public class DotOsuReader
     {
         string file;
         public string? directoryName { private set; get; }
@@ -84,6 +84,15 @@ namespace OsuData.FileExplainer
                 }
                 if (LineJudgeAndTrim(ref tmpLine, "0,0,\""))
                 {
+                    var cnt = 0;
+                    for(var i = 0; i < tmpLine.Length; i++)
+                    {
+                        if ('A'<=tmpLine[i] && tmpLine[i] <= 'z' )
+                        {
+                            cnt = i + 1;
+                        }
+                    }
+                    tmpLine = tmpLine.Substring(0, cnt);
                     imgDir = directoryName + @"\" + tmpLine;
                     continue;
                 }
