@@ -5,8 +5,9 @@ using OsuData.FileExplainer;
 using NAudio;
 using NAudio.Wave;
 using System.Windows.Input;
-using StockingNAudio.Track;
 using System.Drawing.Printing;
+using StockingNAudio.StockingSampleProvider;
+
 namespace OsuAudioPlayer
 {
     public partial class Main : Form
@@ -15,7 +16,11 @@ namespace OsuAudioPlayer
         {
             InitializeComponent();
             this.KeyPreview = true;
+            device = new WaveOutEvent();
         }
+
+        ClassifiedSongsEditorAndExplainerManager classifedSongsManager = new(@"C:\Users\Alyce\Desktop\test");
+
         List<SingleSong> singleSongList = [];
         private string osuDir = @"E:\SmallGame\osu";
         private void Form1_Load(object sender, EventArgs e)
@@ -76,6 +81,9 @@ namespace OsuAudioPlayer
                 listView1.ItemSelectionChanged += ListView1_ItemCheck;
                 this.listView1.Items.Add(listViewItem);
             }
+            GetSelectedSong();
+            Play();
+            processingTask = Task.Run(() => AutoPlayNext());  
         }
         private int chosedIndex = 0;
         private void ListView1_ItemCheck(object? sender, ListViewItemSelectionChangedEventArgs e)
@@ -150,24 +158,24 @@ namespace OsuAudioPlayer
         {
         }
         bool trackOccupied { set; get; } = false;
-        Track track;
+        WaveOutEvent device;
+        StockingWaveEndsSampleProvider endProvider;
         private void Play()
         {
             DotOsuReader osuReader = new(tmpPathOsu);
             if (!trackOccupied)
             {
-                track = new(osuReader.audioDir);
-                track.Init();
-                track.Play();
                 trackOccupied = true;
+                endProvider = new(new AudioFileReader(osuReader.audioDir));
+                device.Init(endProvider);
+                device.Play();
             }
             else
             {
-                track.Stop();
-                track.Dispose();
-                track = new(osuReader.audioDir);
-                track.Init();
-                track.Play();
+                device.Stop();
+                endProvider = new(new AudioFileReader(osuReader.audioDir));
+                device.Init(endProvider);
+                device.Play();
             }
         }
         private void button1_Click(object sender, EventArgs e)
@@ -175,6 +183,26 @@ namespace OsuAudioPlayer
             Play();
         }
         
+        bool autoPlay = true;
+        private Task? processingTask;
+        private void AutoPlayNext()
+        {
+            while (true)
+            {
+                if(endProvider.PlayEnds)
+                {
+                    chosedIndex = chosedIndex == listView1.Items.Count - 1 ? 0 : chosedIndex + 1;
+                    GetSelectedSong();
+                    Play();
+                }
+                else
+                {
+                    //MessageBox.Show("Checking");
+                    // do nothing
+                }
+            }
+        }
+
         /// <summary>
         /// shortcut key
         /// </summary>
@@ -185,32 +213,35 @@ namespace OsuAudioPlayer
         {
             if (keyData == (Keys.Control | Keys.W))
             {
+                // play
                 Play();
-                return true;
             }
             if (keyData == (Keys.Control | Keys.D))
             {
+                // next song
                 chosedIndex = chosedIndex == listView1.Items.Count - 1 ? 0 : chosedIndex + 1;
                 GetSelectedSong();
                 Play();
-                return true;
             }
             if (keyData == (Keys.Control | Keys.A))
             {
+                // previous song
                 chosedIndex = chosedIndex == 0 ? singleSongList.Count - 1 : chosedIndex - 1;
                 GetSelectedSong();
                 Play();
-                return true;
             }
             if(keyData == (Keys.Control | Keys.S))
             {
-                track.Stop();
-                track.Dispose();
-                trackOccupied = false;
-                return true;
+                // stop
+                if (trackOccupied)
+                {
+                    device.Stop();
+                    trackOccupied = false;
+                } 
             }
             if(keyData == (Keys.Control | Keys.P))
             {
+                // hide controls
                 foreach(Control ctrl in this.Controls)
                 {
                     if(ctrl != pictureBox1)
@@ -219,6 +250,7 @@ namespace OsuAudioPlayer
             }
             if(keyData == (Keys.Control | Keys.O))
             {
+                // show controls
                 foreach (Control ctrl in this.Controls)
                 {
                     ctrl.Show();
@@ -226,10 +258,10 @@ namespace OsuAudioPlayer
             }
             if(keyData == (Keys.Control | Keys.I))
             {
-                
+                // add to loved songs
+                classifedSongsManager.AddLovedSong(listView1.Items[chosedIndex].Text);
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-
     }
 }
