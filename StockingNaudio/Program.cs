@@ -64,8 +64,8 @@ using System.Threading;
 //device.Play();
 
 WaveOutEvent device = new();
-StockingWaveEndsSampleProvider endProvider = new StockingWaveEndsSampleProvider(new AudioFileReader(@"E:\SmallGame\osu\Songs\38050 765PRO ALLSTARS - The world is all one!! (TV Size)\ed1.mp3"));
-StockingWaveEndsSampleProvider endProvider2 = new StockingWaveEndsSampleProvider(new AudioFileReader(@"E:\SmallGame\osu\Songs\38050 765PRO ALLSTARS - The world is all one!! (TV Size)\ed1.mp3"));
+StockingWave endProvider = new (new AudioFileReader(@"E:\SmallGame\osu\Songs\38050 765PRO ALLSTARS - The world is all one!! (TV Size)\ed1.mp3"));
+StockingWave endProvider2 = new (new AudioFileReader(@"E:\SmallGame\osu\Songs\38050 765PRO ALLSTARS - The world is all one!! (TV Size)\ed1.mp3"));
 
 List<Task> tasks  = new();
 var t = Task.Run(() =>

@@ -7,6 +7,7 @@ using NAudio.Wave;
 using System.Windows.Input;
 using System.Drawing.Printing;
 using StockingNAudio.StockingSampleProvider;
+using StockingToolKit;
 
 namespace OsuAudioPlayer
 {
@@ -18,14 +19,45 @@ namespace OsuAudioPlayer
             this.KeyPreview = true;
             device = new WaveOutEvent();
         }
+        OsuDataManager MainManager = new(@"E:\SmallGame\osu", @"C:\Users\Alyce\Desktop\test");
+        List<string> songsList = new();
+        string selectedRecordFile = "default";
+        void GenSongsList()
+        {
+            chosedIndex = 0;
+            if (selectedRecordFile != "default")
+                songsList = MainManager.GetClassifiedSongs(selectedRecordFile);
+            else
+                songsList = MainManager.DotOsuFileInfoDictionary.Keys.ToList();
+            listView1.Items.Clear();
+            
+            songsList.Randomize();
+            
+            foreach (var songName in songsList)
+            {
+                DotOsuReader osuReader = new(MainManager.DotOsuFileInfoDictionary[songName]);
+                ListViewItem listViewItem =
+                    new ListViewItem(new string[]
+                    {
+                        osuReader.title ?? "null",
+                        osuReader.artist ?? "null"
+                    },
+                    -1, Color.Empty, Color.Snow, null);
+                // cell click event
+                listView1.ItemSelectionChanged += ListView1_ItemCheck;
+                this.listView1.Items.Add(listViewItem);
+            }
+        }
 
-        ClassifiedSongsEditorAndExplainerManager classifedSongsManager = new(@"C:\Users\Alyce\Desktop\test");
+        void SetSelectedRecordFile(string name)
+        {
+            selectedRecordFile = name;
+            GenSongsList();
+        }
 
-        List<SingleSong> singleSongList = [];
-        private string osuDir = @"E:\SmallGame\osu";
         private void Form1_Load(object sender, EventArgs e)
         {
-            SongPack songPack = new(osuDir);
+            
             //pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
 
             #region loadListView1
@@ -44,49 +76,13 @@ namespace OsuAudioPlayer
             this.SuspendLayout();
             // Add Items to the ListView control.
             #endregion
-            #region loadListView2
-            // Set the initial sorting type for the ListView.
-            this.listView2.Sorting = SortOrder.None;
-            // Disable automatic sorting to enable manual sorting.
-            this.listView2.View = View.Details;
-            // Add columns and set their text.
-            this.listView2.Columns.Add(new ColumnHeader());
-            this.listView2.Columns[0].Text = "Version";
-            this.listView2.Columns[0].Width = 400;
-            //listView1.Columns.Add(new ColumnHeader());
-            //listView1.Columns[1].Text = "Artist";
-            //this.listView1.Columns[1].Width = 100;
-            // Suspend control logic until form is done configuring form.
-            this.SuspendLayout();
-            // Add Items to the ListView control.
-            #endregion
-
-            foreach (var dir in songPack.songDirs)
-            {
-                singleSongList.Add(new SingleSong(dir));
-            }
-
-            foreach (var singleSong in singleSongList)
-            {
-                singleSong.GenRandomSelector();
-                singleSong.readInformationFromDotOsu();
-                ListViewItem listViewItem =
-                    new ListViewItem(new string[]
-                    {
-                        singleSong.title ?? "null",
-                        singleSong.artist ?? "null"
-                    },
-                    -1, Color.Empty, Color.BurlyWood, null);
-                // cell click event
-                listView1.ItemSelectionChanged += ListView1_ItemCheck;
-                this.listView1.Items.Add(listViewItem);
-            }
+            GenSongsList();
             GetSelectedSong();
             Play();
-            processingTask = Task.Run(() => AutoPlayNext());  
+            processingTask = Task.Run(() => AutoPlayNext());
         }
-        private int chosedIndex = 0;
-        private void ListView1_ItemCheck(object? sender, ListViewItemSelectionChangedEventArgs e)
+        int chosedIndex = 0;
+        void ListView1_ItemCheck(object? sender, ListViewItemSelectionChangedEventArgs e)
         {
             if (e.ItemIndex != chosedIndex && e.IsSelected)
             {
@@ -94,6 +90,7 @@ namespace OsuAudioPlayer
                 GetSelectedSong();
             }
         }
+        string? selectedSongName;
         private void GetSelectedSong()
         {
             foreach (ListViewItem item in listView1.Items)
@@ -101,55 +98,17 @@ namespace OsuAudioPlayer
                 item.Selected = false;
             }
             listView1.Items[chosedIndex].Selected = true;
-            if (textBox1.Text != listView1.Items[chosedIndex].Text)
+            if (selectedSongName != listView1.Items[chosedIndex].Text)
             {
-                textBox1.Text = listView1.Items[chosedIndex].Text;
-                var ienuSelectedSong =
-                    from singleSong in singleSongList
-                    where singleSong.title == listView1.Items[chosedIndex].Text
-                    select singleSong;
-                var listSelectedSong = ienuSelectedSong.ToList();
-                this.listView2.Items.Clear();
-                foreach (var dotosu in listSelectedSong[0].dotOsus)
-                {
-                    ListViewItem listViewItem =
-                    new ListViewItem(new string[]
-                    {
-                        dotosu.Name
-                    },
-                    -1, Color.Empty, Color.BurlyWood, null);
-                    this.listView2.Items.Add(listViewItem);
-                }
-                this.listView2.ItemSelectionChanged += ListView2_ItemSelectionChanged;
-
-                // temp codes
-                var pathOsu = listSelectedSong[0].dotOsus[0];
-                DotOsuReader reader = new(pathOsu);
+                selectedSongName = listView1.Items[chosedIndex].Text;
+                DotOsuReader dotOsuSelected = new(MainManager.DotOsuFileInfoDictionary[listView1.Items[chosedIndex].Text]);
                 //MessageBox.Show(reader.imgDir);
-                pictureBox1.Image = new Bitmap(reader.imgDir);
-                tmpPathOsu = pathOsu.ToString();
+                pictureBox1.Image = new Bitmap(dotOsuSelected.imgDir);
+                tmpPathOsu = MainManager.DotOsuFileInfoDictionary[listView1.Items[chosedIndex].Text].ToString();
             }
         }
         String recorder;
         String tmpPathOsu;
-        private void ListView2_ItemSelectionChanged(object? sender, ListViewItemSelectionChangedEventArgs e)
-        {
-            if (recorder != e.Item.Text && e.IsSelected)
-            {
-                recorder = e.Item.Text;
-                var ienuSelectedSong =
-                    from singleSong in singleSongList
-                    where singleSong.title == textBox1.Text
-                    select singleSong;
-                var listSelectedSong = ienuSelectedSong.ToList();
-                var pathOsu = listSelectedSong[0].address + @"\" + e.Item.Text;
-                DotOsuReader reader = new(pathOsu);
-                //MessageBox.Show(reader.imgDir);
-                pictureBox1.Image = new Bitmap(reader.imgDir);
-                tmpPathOsu = pathOsu;
-            }
-        }
-        
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
         }
@@ -159,22 +118,22 @@ namespace OsuAudioPlayer
         }
         bool trackOccupied { set; get; } = false;
         WaveOutEvent device;
-        StockingWaveEndsSampleProvider endProvider;
+        StockingWave waveProvider;
         private void Play()
         {
             DotOsuReader osuReader = new(tmpPathOsu);
             if (!trackOccupied)
             {
                 trackOccupied = true;
-                endProvider = new(new AudioFileReader(osuReader.audioDir));
-                device.Init(endProvider);
+                waveProvider = new(new AudioFileReader(osuReader.audioDir));
+                device.Init(waveProvider);
                 device.Play();
             }
             else
             {
                 device.Stop();
-                endProvider = new(new AudioFileReader(osuReader.audioDir));
-                device.Init(endProvider);
+                waveProvider = new(new AudioFileReader(osuReader.audioDir));
+                device.Init(waveProvider);
                 device.Play();
             }
         }
@@ -187,9 +146,9 @@ namespace OsuAudioPlayer
         private Task? processingTask;
         private void AutoPlayNext()
         {
-            while (true)
+            while (autoPlay)
             {
-                if(endProvider.PlayEnds)
+                if(waveProvider.PlayEnds)
                 {
                     chosedIndex = chosedIndex == listView1.Items.Count - 1 ? 0 : chosedIndex + 1;
                     GetSelectedSong();
@@ -219,14 +178,18 @@ namespace OsuAudioPlayer
             if (keyData == (Keys.Control | Keys.D))
             {
                 // next song
-                chosedIndex = chosedIndex == listView1.Items.Count - 1 ? 0 : chosedIndex + 1;
+                chosedIndex = 
+                    chosedIndex == listView1.Items.Count - 1 ? 
+                    0 : chosedIndex + 1;
                 GetSelectedSong();
                 Play();
             }
             if (keyData == (Keys.Control | Keys.A))
             {
                 // previous song
-                chosedIndex = chosedIndex == 0 ? singleSongList.Count - 1 : chosedIndex - 1;
+                chosedIndex = 
+                    chosedIndex == 0 ? 
+                    listView1.Items.Count - 1 : chosedIndex - 1;
                 GetSelectedSong();
                 Play();
             }
@@ -259,8 +222,19 @@ namespace OsuAudioPlayer
             if(keyData == (Keys.Control | Keys.I))
             {
                 // add to loved songs
-                classifedSongsManager.AddLovedSong(listView1.Items[chosedIndex].Text);
+                MainManager.AddSongToMark(listView1.Items[chosedIndex].Text);
+                // MessageBox.Show($"Add {listView1.Items[chosedIndex].Text}");
             }
+            if(keyData == (Keys.Control | Keys.M))
+            {
+                // change cast list to loved
+                if (selectedRecordFile != "loved")
+                    SetSelectedRecordFile("loved");
+                else
+                    SetSelectedRecordFile("default");
+            }
+            
+
             return base.ProcessCmdKey(ref msg, keyData);
         }
     }

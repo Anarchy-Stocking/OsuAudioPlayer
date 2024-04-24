@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace OsuData.FileExplainer
         Dictionary<string, FileInfo> classifiedSongsRecordFile;
         ClassifiedSongsEditor songsEditor;
         ClassifiedSongsExplainer songsExplainer;
-        string selectedRrcordFileName;
+        public string selectedRrcordFileName { get; set; }
         public ClassifiedSongsEditorAndExplainerManager(string address)
         {
             this.folderAddress = new DirectoryInfo(address);
@@ -26,21 +27,21 @@ namespace OsuData.FileExplainer
                 classifiedSongsRecordFile.Add(file.Name, file);
             }
         }
-        public void AddLovedSong(string songName)
+        public void AddSong(string songName)
         {
-            songsEditor.AddLovedSong(songName);
+            songsEditor.AddSong(songName);
         }
-        public void AddLovedSong(List<string> songNames)
+        public void AddSong(List<string> songNames)
         {
-            songsEditor.AddLovedSong(songNames);
+            songsEditor.AddSong(songNames);
         }
-        public void RemoveLovedSong(string songName)
+        public void RemoveSong(string songName)
         {
-            songsEditor.RemoveClassifiedSong(songName);
+            songsEditor.RemoveSong(songName);
         }
-        public void RemoveLovedSong(List<string> songNames)
+        public void RemoveSong(List<string> songNames)
         {
-            songsEditor.RemoveClassifiedSong(songNames);
+            songsEditor.RemoveSong(songNames);
         }
         public void SelecetRecordFile(string name)
         {
@@ -59,6 +60,7 @@ namespace OsuData.FileExplainer
         }
         public List<string> GetClassifiedSongs()
         {
+            songsExplainer = new ClassifiedSongsExplainer(folderAddress.FullName + @"\loved");
             return songsExplainer.classifiedSongs;
         }
     }

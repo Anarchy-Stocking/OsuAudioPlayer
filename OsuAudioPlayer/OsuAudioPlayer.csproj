@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\OsuDataHandler\OsuData.csproj" />
     <ProjectReference Include="..\StockingNaudio\StockingNAudio.csproj" />
+    <ProjectReference Include="..\StockingToolKit\StockingToolKit.csproj" />
   </ItemGroup>
 
   <ItemGroup>

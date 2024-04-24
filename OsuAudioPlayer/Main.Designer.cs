@@ -30,8 +30,6 @@
         {
             button1 = new Button();
             listView1 = new ListView();
-            textBox1 = new TextBox();
-            listView2 = new ListView();
             pictureBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -50,28 +48,12 @@
             // listView1
             // 
             listView1.BackColor = SystemColors.Window;
-            listView1.Location = new Point(9, 23);
+            listView1.Location = new Point(266, 74);
             listView1.Margin = new Padding(2, 3, 2, 3);
             listView1.Name = "listView1";
             listView1.Size = new Size(502, 359);
             listView1.TabIndex = 4;
             listView1.UseCompatibleStateImageBehavior = false;
-            // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(516, 23);
-            textBox1.Margin = new Padding(2, 3, 2, 3);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(439, 23);
-            textBox1.TabIndex = 5;
-            // 
-            // listView2
-            // 
-            listView2.Location = new Point(516, 52);
-            listView2.Name = "listView2";
-            listView2.Size = new Size(439, 330);
-            listView2.TabIndex = 6;
-            listView2.UseCompatibleStateImageBehavior = false;
             // 
             // pictureBox1
             // 
@@ -89,8 +71,6 @@
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(972, 558);
-            Controls.Add(listView2);
-            Controls.Add(textBox1);
             Controls.Add(listView1);
             Controls.Add(button1);
             Controls.Add(pictureBox1);
@@ -100,14 +80,11 @@
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
         private Button button1;
         private ListView listView1;
-        private TextBox textBox1;
-        private ListView listView2;
         private PictureBox pictureBox1;
     }
 }

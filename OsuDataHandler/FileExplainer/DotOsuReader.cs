@@ -19,7 +19,7 @@ namespace OsuData.FileExplainer
             directoryName = Path.GetDirectoryName(this.file);
             FindInformation();
         }
-        public DotOsuReader(FileInfo file) : this(file.ToString()) { }
+        public DotOsuReader(FileInfo file): this(file.ToString()) { }
         public void ShowText()
         {
             foreach (var line in content)

@@ -17,6 +17,7 @@ namespace OsuData
             dotmp3s = [];
             images = [];
             ClassifyFiles();
+            readInformationFromDotOsu();
         }
         public SingleSong(String address) : this(new DirectoryInfo(address)) { }
     }

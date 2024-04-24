@@ -16,7 +16,7 @@ namespace OsuData.FileExplainer
             classifiedSongFile = new FileInfo(fileDir);
         }
         public ClassifiedSongsEditor(FileInfo file):this(file.FullName) { }
-        public void AddLovedSong(string songName)
+        public void AddSong(string songName)
         {
             if (classifiedSongFile.Exists)
             {
@@ -40,7 +40,7 @@ namespace OsuData.FileExplainer
                 }
             }
         }
-        public void AddLovedSong(List<string> songNames)
+        public void AddSong(List<string> songNames)
         {
             if (classifiedSongFile.Exists)
             {
@@ -67,7 +67,7 @@ namespace OsuData.FileExplainer
                 }
             }
         }
-        public void RemoveClassifiedSong(string songName)
+        public void RemoveSong(string songName)
         {
             if (classifiedSongFile.Exists)
             {
@@ -83,7 +83,7 @@ namespace OsuData.FileExplainer
                 File.WriteAllLines(fileDir, newLines.ToArray());
             }
         }   
-        public void RemoveClassifiedSong(List<string> songNames)
+        public void RemoveSong(List<string> songNames)
         {
             if (classifiedSongFile.Exists)
             {
