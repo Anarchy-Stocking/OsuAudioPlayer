@@ -65,5 +65,15 @@ namespace StockingNAudio.StockingSampleProvider
                 //Console.WriteLine();
             }
         }
+
+        private void Dispose()
+        {
+            currBuffer = null;
+        }
+
+        ~StockingWave()
+        {
+            Dispose();
+        }
     }
 }

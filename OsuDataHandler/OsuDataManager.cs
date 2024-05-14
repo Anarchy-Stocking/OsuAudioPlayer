@@ -37,6 +37,7 @@ namespace OsuData
         {
             return new(DotOsuFileInfoDictionary[songName]);
         }
+        #region markedSongsManager 
         ClassifiedSongsEditorAndExplainerManager classifyManager;
         string selectedRecordFileName;
         public List<string> GetClassifiedSongs(string markName)
@@ -60,5 +61,6 @@ namespace OsuData
         {
             classifyManager.RemoveSong(songNames);
         }
+#endregion
     }
 }

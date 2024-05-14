@@ -1,0 +1,42 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AvaloniaStyleWindow.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaStyleWindow.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AvaloniaStyleWindow">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    <Window.Background>
+        <ImageBrush Source="{Binding Cover}" 
+                    Opacity="0.7"
+                    />
+    </Window.Background>
+        <DockPanel Margin="20">
+        <TextBox Margin="0 5" Text="{Binding DisPlayingPictureDirs}"/>
+		<ListBox x:Name="animals" ItemsSource="{Binding PlayList }" SelectionChanged="HandleSelectionChanged">
+            <ListBox.Styles>
+                <Style Selector="ListBoxItem">
+					<Setter Property="Padding" Value="5"/>
+					<Setter Property="Margin" Value="0 1"/>
+					<Setter Property="Background" Value="LightGray"/>
+					<Setter Property="CornerRadius" Value="5"/>
+					<Setter Property="Foreground" Value="Black"/>
+					<Setter Property="FontWeight" Value="DemiBold"/>
+					<Setter Property="FontSize" Value="10"/>
+					<Setter Property="Height" Value="25"/>
+					<Setter Property="Width" Value="200"/>
+                </Style>
+            </ListBox.Styles>
+		</ListBox>
+		<TextBlock Margin="50 50" Name="showSelectionCase"/>
+	</DockPanel>
+
+</Window>

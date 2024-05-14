@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockingNAudio", "StockingN
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockingToolKit", "StockingToolKit\StockingToolKit.csproj", "{50CC5593-26C4-4C36-8823-5DA9FA3FF674}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlotDrawByteTest", "ScottPlotDrawByteTest\ScottPlotDrawByteTest.csproj", "{9C06E389-4D1C-4F00-AA75-E608F5000F48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlotDrawByteTest", "ScottPlotDrawByteTest\ScottPlotDrawByteTest.csproj", "{9C06E389-4D1C-4F00-AA75-E608F5000F48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaStyleWindow", "AvaloniaStyleWindow\AvaloniaStyleWindow.csproj", "{397D720C-D00C-4124-82ED-DEA4DF3C0ECB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{9C06E389-4D1C-4F00-AA75-E608F5000F48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C06E389-4D1C-4F00-AA75-E608F5000F48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C06E389-4D1C-4F00-AA75-E608F5000F48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{397D720C-D00C-4124-82ED-DEA4DF3C0ECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{397D720C-D00C-4124-82ED-DEA4DF3C0ECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{397D720C-D00C-4124-82ED-DEA4DF3C0ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{397D720C-D00C-4124-82ED-DEA4DF3C0ECB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

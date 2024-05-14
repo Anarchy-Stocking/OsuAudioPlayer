@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Drawing.Printing;
 using StockingNAudio.StockingSampleProvider;
 using StockingToolKit;
+using System.Timers;
 
 namespace OsuAudioPlayer
 {
@@ -79,7 +80,13 @@ namespace OsuAudioPlayer
             GenSongsList();
             GetSelectedSong();
             Play();
-            processingTask = Task.Run(() => AutoPlayNext());
+            // Create a timer with a two second interval.
+            var aTimer = new System.Timers.Timer(1000);
+            // Hook up the Elapsed event for the timer. 
+            aTimer.Elapsed += AutoPlayNextEvent;
+            aTimer.AutoReset = true;
+            aTimer.Enabled = true;
+
         }
         int chosedIndex = 0;
         void ListView1_ItemCheck(object? sender, ListViewItemSelectionChangedEventArgs e)
@@ -132,6 +139,7 @@ namespace OsuAudioPlayer
             else
             {
                 device.Stop();
+                device.Dispose();
                 waveProvider = new(new AudioFileReader(osuReader.audioDir));
                 device.Init(waveProvider);
                 device.Play();
@@ -143,22 +151,18 @@ namespace OsuAudioPlayer
         }
         
         bool autoPlay = true;
-        private Task? processingTask;
-        private void AutoPlayNext()
+        private void AutoPlayNextEvent(Object source, ElapsedEventArgs e)
         {
-            while (autoPlay)
+            if(waveProvider.PlayEnds)
             {
-                if(waveProvider.PlayEnds)
-                {
-                    chosedIndex = chosedIndex == listView1.Items.Count - 1 ? 0 : chosedIndex + 1;
-                    GetSelectedSong();
-                    Play();
-                }
-                else
-                {
-                    //MessageBox.Show("Checking");
-                    // do nothing
-                }
+                chosedIndex = chosedIndex == listView1.Items.Count - 1 ? 0 : chosedIndex + 1;
+                GetSelectedSong();
+                Play();
+            }
+            else
+            {
+                //MessageBox.Show("Checking");
+                // do nothing
             }
         }
 

@@ -1,93 +1,46 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using StockingNAudio.StockingSampleProvider;
 using NAudio.Wave;
-using StockingNAudio.StockingSampleProvider;
-using System.Threading.Tasks;
-using System.Threading;
-
-//Track track = new(@"E:\SmallGame\osu\Songs\38050 765PRO ALLSTARS - The world is all one!! (TV Size)\ed1.mp3");
-//track.Init();
-//Console.WriteLine("Initialized");
-//Console.WriteLine(track.rawAudioReader.WaveFormat);
-
-//while (true)
-//{
-//    var read = Console.ReadLine();
-//    switch (read)
-//    {
-//        case "play":
-//            track.Play();
-//            break;
-//        case "stop":
-//            track.Stop();
-//            break;
-//        case "init":
-//            track.Init();
-//            Console.WriteLine("Initialized");
-//            break;
-//        case ">>":
-//            track.JumpForward(5);
-//            break;
-//        case "<<":
-//            track.JumpBack(5);
-//            break;
-//        case "0.5":
-//            track.Volume(0.5f);
-//            break;
-//        case "2":
-//            track.Volume(2f);
-//            break;
-//        case "0.1":
-//            track.Volume(0.1f);
-//            break;
-//        case "byte":
-//            track.ByteView();
-//            break;
-//        default:
-//            try
-//            {
-//                var num = Int32.Parse(read);
-//                track.Volume(num);
-//            }
-//            catch
-//            {
-
-//            }
-//            break;
-//    }
-//}
-
-//WaveOutEvent device = new();
-//AudioFileReader reader = new(@"E:\SmallGame\osu\Songs\38050 765PRO ALLSTARS - The world is all one!! (TV Size)\ed1.mp3");
-//StockingVolumeSampleProvider volumeSampleProvider = new(reader);
-//device.Init(volumeSampleProvider);
-//device.Play();
-
+using System.Timers;
 WaveOutEvent device = new();
-StockingWave endProvider = new (new AudioFileReader(@"E:\SmallGame\osu\Songs\38050 765PRO ALLSTARS - The world is all one!! (TV Size)\ed1.mp3"));
-StockingWave endProvider2 = new (new AudioFileReader(@"E:\SmallGame\osu\Songs\38050 765PRO ALLSTARS - The world is all one!! (TV Size)\ed1.mp3"));
+StockingWave waveProvider = new (new AudioFileReader(@"E:\SmallGame\osu\Songs\38050 765PRO ALLSTARS - The world is all one!! (TV Size)\ed1.mp3"));
+device.Init(waveProvider);
+device.Play();
 
-List<Task> tasks  = new();
-var t = Task.Run(() =>
+// Create a timer with a two second interval.
+var aTimer = new System.Timers.Timer(1000/60);
+// Hook up the Elapsed event for the timer. 
+aTimer.Elapsed += OnTimedEvent;
+aTimer.AutoReset = true;
+aTimer.Enabled = true;
+
+void OnTimedEvent(Object source, ElapsedEventArgs e)
 {
-    while (!endProvider.PlayEnds)
+    
+    if (waveProvider.currBuffer != null && !waveProvider.PlayEnds)
     {
-        //do nothing
-        //Console.WriteLine("Checking");
+        Console.WriteLine("The Elapsed event was raised at {0:HH:mm:ss.fff}",
+                      e.SignalTime);
+        var slice = 10;
+        var sliceLength = waveProvider.currBuffer.Length / slice;
+        var averBuffer = new float[slice];
+        for (int i = 0; i < waveProvider.currBuffer.Length; i+= sliceLength)
+        {
+            var sum = 0f;
+            for (int j = 0; j < sliceLength; j++)
+            {
+                sum += waveProvider.currBuffer[i + j];
+            }
+            averBuffer[i/sliceLength] = sum / sliceLength;
+        }
+        foreach (var f in averBuffer)
+        {
+            Console.Write(f +" ");
+        }
+        Console.WriteLine();
     }
-    device.Stop();
-    device.Init(endProvider2);
-    device.Play();
-    Console.WriteLine("Ends");
-});
-tasks.Add(t);
-tasks.Add(Task.Run(()=>
-{
-    device.Init(endProvider);
-    //device.Init(new StockingWaveEndsSampleProvider(new AudioFileReader(@"E:\SmallGame\osu\Songs\38050 765PRO ALLSTARS - The world is all one!! (TV Size)\ed1.mp3")));
-    device.Play();
-}));
-Task.WaitAll(tasks.ToArray());
+    // Console.WriteLine(waveProvider.currBuffer == null ? "null" : waveProvider.currBuffer[0].ToString());
+}
+
 while (true) ;
 
 
